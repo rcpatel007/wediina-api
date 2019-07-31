@@ -480,4 +480,49 @@ router.delete('/venue_delete/:id', (req, res, next) => {
 });
 
 
+/************************************************************* */
+
+// send inqury
+
+/******************************************************************** */
+
+
+// send venue inquiry
+router.post('/venue_inquiry', (req, res, next) => {
+    var venue__inquiry = {
+        customer_id: req.body.customer_id,
+        venue_id: req.body.venue_id,
+        date: req.date.body.date,
+        email: req.body.email,
+        mobileNo: req.body.mobile,
+        no_of_person: req.body.person,
+        days: req.body.body.days,
+        puropse: req.body.puropse
+    }
+    db.venue_category.save(venue_inquiry, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "vendors category add" });
+    });
+});
+
+// send vendor inquiry
+router.post('/vendor_inquiry', (req, res, next) => {
+    var venue__inquiry = {
+        customer_id: req.body.customer_id,
+        vendor_id: req.body.venue_id,
+        date: req.date.body.date,
+        email: req.body.email,
+        mobileNo: req.body.mobile,
+        location:req.body,
+        puropse: req.body.puropse
+    }
+    db.venue_category.save(venue_inquiry, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "vendors category add" });
+    });
+});
 module.exports = router;
