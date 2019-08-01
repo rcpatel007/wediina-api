@@ -13,6 +13,32 @@ var db = mongojs('mongodb://chirag:chirag123@ds253857.mlab.com:53857/venuebookin
 router.get('/', (req, res, next) => {
     res.render('index');
 });
+// login admin
+router.get('/admin', (req, res, next) => {
+    db.admin.findOne({ email: req.body.email }, (err, result) => {
+        if (err) return res.status(500).send('Error on the server.');
+        if (!result) return res.status(404).send('No user found.');
+         if (req.body.password == result.password) {
+            res.json(result);
+            res.status(200).send({ "message": "Login Sucessfully" });
+                var passwordIsValid =true;
+        }
+        if (passwordIsValid=false) return res.status(401).send('password is not valid');
+    });
+});
+// admin update password
+router.put('/admin_update/:id', (req, res, next) => {
+    var password = req.body;
+    var hashedPassword = bcrypt.hashSync(req.body.password, 8);
+    db.admin.update({ _id: mongojs.ObjectId(req.params.id) }, { $set: { password: req.body.hashedPassword } }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "password Updated" });
+    });
+});
+
+
 
 
 //customer Login
@@ -185,7 +211,7 @@ router.post('/vendor_cat', (req, res, next) => {
 });
 //update vendor category
 router.put('/vendor_cat/:id', (req, res, next) => {
-    var vendor_cat_name = req.body;
+    var vendor_cat_name = req.body.vendor_cat_name;
     db.vendor_category.update({ _id: mongojs.ObjectId(req.params.id) }, { $set: { vendor_cat_name: req.body.vendor_cat_name } }, (err, result) => {
         if (err) {
             res.send(err);
@@ -416,7 +442,6 @@ router.post('/newvendor', (req, res, next) => {
         city: req.body.city,
         area: req.body.area,
         state: req.body.state,
-        venue: req.body.venuedetail
     }
     db.venues.save(associate, (err, result) => {
         if (err) {
@@ -492,7 +517,7 @@ router.post('/venue_inquiry', (req, res, next) => {
     var venue__inquiry = {
         customer_id: req.body.customer_id,
         venue_id: req.body.venue_id,
-        date: req.date.body.date,
+        date: req.body.date,
         email: req.body.email,
         mobileNo: req.body.mobile,
         no_of_person: req.body.person,
@@ -512,10 +537,10 @@ router.post('/vendor_inquiry', (req, res, next) => {
     var venue__inquiry = {
         customer_id: req.body.customer_id,
         vendor_id: req.body.venue_id,
-        date: req.date.body.date,
+        date: req.body.date,
         email: req.body.email,
         mobileNo: req.body.mobile,
-        location:req.body,
+        location: req.body,
         puropse: req.body.puropse
     }
     db.venue_category.save(venue_inquiry, (err, result) => {
