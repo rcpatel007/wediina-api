@@ -693,4 +693,80 @@ router.post('/vendor_inquiry', (req, res, next) => {
         res.json({ "message": "vendors category add" });
     });
 });
+
+
+
+/**************************************************************** */
+//    Review
+/**************************************************************** */
+
+//get all home image
+router.get('/review', (req, res, next) => {
+    db.review.find((err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json(result);
+    });
+});
+
+
+//get home image by id
+router.get('/review/:id', (req, res, next) => {
+    db.review.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json(result);
+    });
+});
+
+// create home image
+router.post('/review', (req, res, next) => {
+    var associate = {
+        customer_id: req.body.customer_id,
+        venue_id: req.body.venue_id,
+        vendor_id: req.body.vendor_id,
+        rating: req.body.rating,
+        comment:req.body.comment
+    }
+    db.review.save(associate, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "home slider image add" });
+    });
+});
+//update home image
+router.put('/review/:id', (req, res, next) => {
+
+    db.review.update({ _id: mongojs.ObjectId(req.params.id) }, {
+        $set: {
+            customer_id: req.body.customer_id,
+            venue_id: req.body.venue_id,
+            vendor_id: req.body.vendor_id,
+            rating: req.body.rating,
+            comment:req.body.comment
+        }
+    }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "home slider image update" });
+    });
+});
+
+//delete home image
+router.delete('/review/:id', (req, res, next) => {
+    db.review.remove({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "home ads slider image Delete" });
+    });
+});
+
+
+
+
 module.exports = router;
