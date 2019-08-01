@@ -233,7 +233,7 @@ router.delete('/vendor_cat/:id', (req, res, next) => {
 
 
 /**************************************************************** */
-//    home slider
+//    home ads
 /**************************************************************** */
 
 //get all home image
@@ -303,12 +303,155 @@ router.delete('/home_ads/:id', (req, res, next) => {
 });
 
 
+/**************************************************************** */
+//    home slider
+/**************************************************************** */
+
+//get all home slider image
+router.get('/home_slider', (req, res, next) => {
+    db.home_ads.find((err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json(result);
+    });
+});
+
+
+//get home slider image by id
+router.get('/home_slider/:id', (req, res, next) => {
+    db.home_ads.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json(result);
+    });
+});
+
+// create home slider image
+router.post('/new_home_slider', (req, res, next) => {
+    var associate = {
+        name: req.body.name,
+        venue_id: req.body.venue_id,
+        vendor_id: req.body.vendor_id,
+        image: req.body.image,
+        city: req.body.city
+    }
+    db.home_ads.save(associate, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "home slider image add" });
+    });
+});
+//update home slider image
+router.put('/home_slider/:id', (req, res, next) => {
+
+    db.home_ads.update({ _id: mongojs.ObjectId(req.params.id) }, {
+        $set: {
+            name: req.body.name,
+            venue_id: req.body.venue_id,
+            vendor_id: req.body.vendor_id,
+            image: req.body.image,
+            city: req.body.city
+        }
+    }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "home slider image update" });
+    });
+});
+
+//delete home slider image
+router.delete('/home_slider/:id', (req, res, next) => {
+    db.home_ads.remove({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "home ads slider image Delete" });
+    });
+});
+
+
+
+
+/**************************************************************** */
+//    Customer
+/**************************************************************** */
+
+//get all home image
+router.get('/customer', (req, res, next) => {
+    db.customer.find((err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json(result);
+    });
+});
+
+
+//get home image by id
+router.get('/customer/:id', (req, res, next) => {
+    db.customer.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json(result);
+    });
+});
+
+// create home image
+router.post('/new_customer', (req, res, next) => {
+    var associate = {
+        name: req.body.name,
+        contact_no: req.body.contact_no,
+        email: req.body.email,
+        password: req.body.password
+
+    }
+    db.customer.save(associate, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "New Customer add" });
+    });
+});
+//update home image
+router.put('/customer/:id', (req, res, next) => {
+
+    db.customer.update({ _id: mongojs.ObjectId(req.params.id) }, {
+        $set: {
+            name: req.body.name,
+            contact_no: req.body.contact_no,
+            email: req.body.email,
+            password: req.body.password
+            }
+    }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "Customer Detail Update" });
+    });
+});
+
+//delete home image
+router.delete('/customer/:id', (req, res, next) => {
+    db.customer.remove({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "Customer delete successfully" });
+    });
+});
+
+
 
 /**************************************************************** */
 //    venues
 /**************************************************************** */
 
-//get all home image
+//get all venue
 router.get('/venue', (req, res, next) => {
     db.venues.find((err, result) => {
         if (err) {
@@ -319,7 +462,7 @@ router.get('/venue', (req, res, next) => {
 });
 
 
-//get home image by id
+//get venue by id
 router.get('/venue_by_id/:id', (req, res, next) => {
     db.venues.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
         if (err) {
@@ -329,7 +472,7 @@ router.get('/venue_by_id/:id', (req, res, next) => {
     });
 });
 
-// create home image
+// create new venue
 router.post('/newvenue', (req, res, next) => {
     var associate = {
         venue_cat_id: req.body.venue_cat_id,
@@ -352,7 +495,7 @@ router.post('/newvenue', (req, res, next) => {
         res.json({ "message": "new venue add" });
     });
 });
-//update home image
+//update venue detail
 router.put('/venue_update/:id', (req, res, next) => {
     var venue_cat_id = req.body.venue_cat_id;
     var fname = req.body.fname;
@@ -389,7 +532,7 @@ router.put('/venue_update/:id', (req, res, next) => {
     });
 });
 
-//delete vendor
+//delete venue
 router.delete('/venue_delete/:id', (req, res, next) => {
     db.home_ads.remove({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
         if (err) {
@@ -453,7 +596,7 @@ router.post('/newvendor', (req, res, next) => {
 
 
 //update vendor by id
-router.put('/venue_update/:id', (req, res, next) => {
+router.put('/vendor_update/:id', (req, res, next) => {
     var vendor_cat_id = req.body.vendor_cat_id;
     var fname = req.body.fname;
     var lname = req.body.lname;
@@ -495,7 +638,7 @@ router.put('/venue_update/:id', (req, res, next) => {
 
 
 //delete vendor
-router.delete('/venue_delete/:id', (req, res, next) => {
+router.delete('/vendor_delete/:id', (req, res, next) => {
     db.home_ads.remove({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
         if (err) {
             res.send(err);
