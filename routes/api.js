@@ -478,6 +478,7 @@ router.post('/newvenue', (req, res, next) => {
         venue_cat_id: req.body.venue_cat_id,
         fname: req.body.fname,
         lname: req.body.lname,
+        package:req.body.package_time,
         companyName: req.body.companyName,
         contactno: req.body.contactno,
         email: req.body.email,
@@ -500,6 +501,7 @@ router.put('/venue_update/:id', (req, res, next) => {
     var venue_cat_id = req.body.venue_cat_id;
     var fname = req.body.fname;
     var lname = req.body.lname;
+    var  package =req.body.package_time,
     var companyName = req.body.companyName;
     var contactno = req.body.contactno;
     var email = req.body.email;
@@ -514,6 +516,7 @@ router.put('/venue_update/:id', (req, res, next) => {
             venue_cat_id: req.body.venue_cat_id,
             fname: req.body.fname,
             lname: req.body.lname,
+            package:req.body.package_time,
             companyName: req.body.companyName,
             contactno: req.body.contactno,
             email: req.body.email,
@@ -576,6 +579,7 @@ router.post('/newvendor', (req, res, next) => {
         vendor_cat_id: req.body.vendor_cat_id,
         fname: req.body.fname,
         lname: req.body.lname,
+        package:req.body.package_time,
         companyName: req.body.companyName,
         contactno: req.body.contactno,
         email: req.body.email,
@@ -600,6 +604,7 @@ router.put('/vendor_update/:id', (req, res, next) => {
     var vendor_cat_id = req.body.vendor_cat_id;
     var fname = req.body.fname;
     var lname = req.body.lname;
+    var package=req.body.package_time,
     var companyName = req.body.companyName;
     var contactno = req.body.contactno;
     var email = req.body.email;
@@ -616,6 +621,7 @@ router.put('/vendor_update/:id', (req, res, next) => {
             vendor_cat_id: req.body.vendor_cat_id,
             fname: req.body.fname,
             lname: req.body.lname,
+            package:req.body.package_time,
             companyName: req.body.companyName,
             contactno: req.body.contactno,
             email: req.body.email,
