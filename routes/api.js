@@ -501,7 +501,7 @@ router.put('/venue_update/:id', (req, res, next) => {
     var venue_cat_id = req.body.venue_cat_id;
     var fname = req.body.fname;
     var lname = req.body.lname;
-    var  package =req.body.package_time,
+    var  package =req.body.package_time;
     var companyName = req.body.companyName;
     var contactno = req.body.contactno;
     var email = req.body.email;
@@ -575,7 +575,7 @@ router.get('/vendor_by_id/:id', (req, res, next) => {
 
 // create vendors
 router.post('/newvendor', (req, res, next) => {
-    var associate = {
+    var associate = {   
         vendor_cat_id: req.body.vendor_cat_id,
         fname: req.body.fname,
         lname: req.body.lname,
@@ -604,7 +604,7 @@ router.put('/vendor_update/:id', (req, res, next) => {
     var vendor_cat_id = req.body.vendor_cat_id;
     var fname = req.body.fname;
     var lname = req.body.lname;
-    var package=req.body.package_time,
+    var package=req.body.package_time;
     var companyName = req.body.companyName;
     var contactno = req.body.contactno;
     var email = req.body.email;
