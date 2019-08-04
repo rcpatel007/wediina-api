@@ -309,7 +309,7 @@ router.delete('/home_ads/:id', (req, res, next) => {
 
 //get all home slider image
 router.get('/home_slider', (req, res, next) => {
-    db.home_ads.find((err, result) => {
+    db.home_slider.find((err, result) => {
         if (err) {
             res.send(err);
         }
@@ -320,7 +320,7 @@ router.get('/home_slider', (req, res, next) => {
 
 //get home slider image by id
 router.get('/home_slider/:id', (req, res, next) => {
-    db.home_ads.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
+    db.home_slider.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
         if (err) {
             res.send(err);
         }
@@ -331,13 +331,9 @@ router.get('/home_slider/:id', (req, res, next) => {
 // create home slider image
 router.post('/new_home_slider', (req, res, next) => {
     var associate = {
-        name: req.body.name,
-        venue_id: req.body.venue_id,
-        vendor_id: req.body.vendor_id,
         image: req.body.image,
-        city: req.body.city
-    }
-    db.home_ads.save(associate, (err, result) => {
+    } 
+    db.home_slider.save(associate, (err, result) => {
         if (err) {
             res.send(err);
         }
@@ -347,14 +343,10 @@ router.post('/new_home_slider', (req, res, next) => {
 //update home slider image
 router.put('/home_slider/:id', (req, res, next) => {
 
-    db.home_ads.update({ _id: mongojs.ObjectId(req.params.id) }, {
+    db.home_slider.update({ _id: mongojs.ObjectId(req.params.id) }, {
         $set: {
-            name: req.body.name,
-            venue_id: req.body.venue_id,
-            vendor_id: req.body.vendor_id,
             image: req.body.image,
-            city: req.body.city
-        }
+         }
     }, (err, result) => {
         if (err) {
             res.send(err);
@@ -365,7 +357,7 @@ router.put('/home_slider/:id', (req, res, next) => {
 
 //delete home slider image
 router.delete('/home_slider/:id', (req, res, next) => {
-    db.home_ads.remove({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
+    db.home_slider.remove({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
         if (err) {
             res.send(err);
         }
