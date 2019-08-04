@@ -483,11 +483,22 @@ router.post('/newvenue', (req, res, next) => {
         contactno: req.body.contactno,
         email: req.body.email,
         gstno: req.body.gstno,
+        status:req.body.status,
         password: req.body.password,
         address: req.body.address,
         city: req.body.city,
         state: req.body.state,
-        venue: req.body.venuedetail
+        parking:req.body.parking,
+        catringValue:req.body.catringValue,
+        themepermission:req.body.themepermission,
+        p_img:req.body.p_img,
+        oimg= req.body.oimg,
+        timeper:req.body.timeper,
+        areavenue:req.body.areavenue,
+        cop:req.body.cop,
+        location:req.body.location,
+        desp:req.body.desp,
+        video_story:req.body.video_story
     }
     db.venues.save(associate, (err, result) => {
         if (err) {
@@ -525,7 +536,17 @@ router.put('/venue_update/:id', (req, res, next) => {
             address: req.body.address,
             city: req.body.city,
             state: req.body.state,
-            venue: req.body.venuedetail
+            parking:req.body.parking,
+            catringValue:req.body.catringValue,
+            themepermission:req.body.themepermission,
+            p_img:req.body.p_img,
+            oimg= req.body.oimg,
+            timeper:req.body.timeper,
+            areavenue:req.body.areavenue,
+            cop:req.body.cop,
+            location:req.body.location,
+            desp:req.body.desp,
+            video_story:req.body.video_story
         }
     }, (err, result) => {
         if (err) {
@@ -592,6 +613,7 @@ router.post('/newvendor', (req, res, next) => {
         fname: req.body.fname,
         lname: req.body.lname,
         package:req.body.package_time,
+        status:req.body.status,
         companyName: req.body.companyName,
         contactno: req.body.contactno,
         email: req.body.email,
@@ -601,6 +623,7 @@ router.post('/newvendor', (req, res, next) => {
         city: req.body.city,
         area: req.body.area,
         state: req.body.state,
+        video_story:req.body.video_story
     }
     db.vendors.save(associate, (err, result) => {
         if (err) {
@@ -634,6 +657,7 @@ router.put('/vendor_update/:id', (req, res, next) => {
             fname: req.body.fname,
             lname: req.body.lname,
             package:req.body.package_time,
+            status:req.body.status,
             companyName: req.body.companyName,
             contactno: req.body.contactno,
             email: req.body.email,
@@ -644,7 +668,8 @@ router.put('/vendor_update/:id', (req, res, next) => {
             city: req.body.city,
             state: req.body.state,
             images: req.body.images,
-            sub_images: req.body.sub_images
+            sub_images: req.body.sub_images,
+            video_story:req.body.video_story
         }
     }, (err, result) => {
         if (err) {
