@@ -625,7 +625,8 @@ router.post('/newvendor', (req, res, next) => {
         city: req.body.city,
         area: req.body.area,
         state: req.body.state,
-        video_story:req.body.video_story
+        video_story:req.body.video_story,
+        desp:req.body.desp
     }
     db.vendors.save(associate, (err, result) => {
         if (err) {
@@ -669,7 +670,8 @@ router.put('/vendor_update/:id', (req, res, next) => {
             area: req.body.area,
             city: req.body.city,
             state: req.body.state,
-            video_story:req.body.video_story
+            video_story:req.body.video_story,
+            desp:req.body.desp
         }
     }, (err, result) => {
         if (err) {
