@@ -537,13 +537,25 @@ router.put('/venue_update/:id', (req, res, next) => {
 
 //delete venue
 router.delete('/venue_delete/:id', (req, res, next) => {
-    db.home_ads.remove({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
+    db.venues.remove({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
         if (err) {
             res.send(err);
         }
         res.json({ "message": "venue_delete Delete" });
     });
 });
+
+// status change
+router.put('/venue_status/:id', (req, res, next) => {
+    var status = req.body.Status;
+    db.venues.update({ _id: mongojs.ObjectId(req.params.id) }, { $set: { status: req.body.Status } }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "Venue Status Updated" });
+    });
+});
+
 
 
 /**************************************************************** */
@@ -552,7 +564,7 @@ router.delete('/venue_delete/:id', (req, res, next) => {
 
 //get all vendors
 router.get('/vendor', (req, res, next) => {
-    db.venues.find((err, result) => {
+    db.vendors.find((err, result) => {
         if (err) {
             res.send(err);
         }
@@ -563,7 +575,7 @@ router.get('/vendor', (req, res, next) => {
 
 //get vendors by id
 router.get('/vendor_by_id/:id', (req, res, next) => {
-    db.venues.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
+    db.vendors.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
         if (err) {
             res.send(err);
         }
@@ -590,7 +602,7 @@ router.post('/newvendor', (req, res, next) => {
         area: req.body.area,
         state: req.body.state,
     }
-    db.venues.save(associate, (err, result) => {
+    db.vendors.save(associate, (err, result) => {
         if (err) {
             res.send(err);
         }
@@ -616,7 +628,7 @@ router.put('/vendor_update/:id', (req, res, next) => {
     var state = req.body.state;
     var images = req.body.images;
     var sub_images = req.body.sub_images;
-    db.venues.update({ _id: mongojs.ObjectId(req.params.id) }, {
+    db.vendors.update({ _id: mongojs.ObjectId(req.params.id) }, {
         $set: {
             vendor_cat_id: req.body.vendor_cat_id,
             fname: req.body.fname,
@@ -645,13 +657,26 @@ router.put('/vendor_update/:id', (req, res, next) => {
 
 //delete vendor
 router.delete('/vendor_delete/:id', (req, res, next) => {
-    db.home_ads.remove({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
+    db.vendors.remove({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
         if (err) {
             res.send(err);
         }
         res.json({ "message": "venue_delete Delete" });
     });
 });
+
+
+// status change
+router.put('/vendor_status/:id', (req, res, next) => {
+    var status = req.body.Status;
+    db.vendors.update({ _id: mongojs.ObjectId(req.params.id) }, { $set: { status: req.body.Status } }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "Vendor Status Updated" });
+    });
+});
+
 
 
 /************************************************************* */
