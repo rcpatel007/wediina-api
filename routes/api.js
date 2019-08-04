@@ -618,7 +618,7 @@ router.post('/newvendor', (req, res, next) => {
         contactno: req.body.contactno,
         email: req.body.email,
         gstno: req.body.gstno,
-        images:req.body.image,
+        image:req.body.image,
         sub_images:req.body.sub_images,
         password: req.body.password,
         address: req.body.address,
@@ -669,8 +669,6 @@ router.put('/vendor_update/:id', (req, res, next) => {
             area: req.body.area,
             city: req.body.city,
             state: req.body.state,
-            images: req.body.images,
-            sub_images: req.body.sub_images,
             video_story:req.body.video_story
         }
     }, (err, result) => {
