@@ -179,7 +179,7 @@ router.delete('/venue_cat/:id', (req, res, next) => {
 
 //get all venue category
 router.get('/city', (req, res, next) => {
-    db.venue_category.find((err, result) => {
+    db.city.find((err, result) => {
         if (err) {
             res.send(err);
         }
