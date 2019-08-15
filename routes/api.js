@@ -190,7 +190,7 @@ router.get('/city', (req, res, next) => {
 
 //get venue category by id
 router.get('/city/:id', (req, res, next) => {
-    db.venue_category.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
+    db.city.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
         if (err) {
             res.send(err);
         }
@@ -201,7 +201,7 @@ router.get('/city/:id', (req, res, next) => {
 // create venue category
 router.post('/city', (req, res, next) => {
     // venue_cat_name: req.body.venue_cat_name;
-    db.venue_category.save({ city: req.body.city}, (err, result) => {
+    db.city.save({ city: req.body.city}, (err, result) => {
         if (err) {
             res.send(err);
         }
@@ -210,7 +210,7 @@ router.post('/city', (req, res, next) => {
 });
 //update venue category
 router.put('/city/:id', (req, res, next) => {
-    db.venue_category.update({ _id: mongojs.ObjectId(req.params.id) }, { $set: { city: req.body.city} }, (err, result) => {
+    db.city.update({ _id: mongojs.ObjectId(req.params.id) }, { $set: { city: req.body.city} }, (err, result) => {
         if (err) {
             res.send(err);
         }
@@ -220,7 +220,7 @@ router.put('/city/:id', (req, res, next) => {
 
 //delete venue category
 router.delete('/city/:id', (req, res, next) => {
-    db.venue_category.remove({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
+    db.city.remove({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
         if (err) {
             res.send(err);
         }
