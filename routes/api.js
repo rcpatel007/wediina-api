@@ -146,7 +146,7 @@ router.get('/venue_cat/:id', (req, res, next) => {
 // create venue category
 router.post('/venue_cat', (req, res, next) => {
     // venue_cat_name: req.body.venue_cat_name;
-    db.venue_category.save({ venue_cat_name: req.body.venue_cat_name }, (err, result) => {
+    db.venue_category.save({ venue_cat_name: req.body.venue_cat_name,image: req.body.cat_img }, (err, result) => {
         if (err) {
             res.send(err);
         }
@@ -155,7 +155,7 @@ router.post('/venue_cat', (req, res, next) => {
 });
 //update venue category
 router.put('/venue_cat/:id', (req, res, next) => {
-    db.venue_category.update({ _id: mongojs.ObjectId(req.params.id) }, { $set: { venue_cat_name: req.body.venue_cat_name } }, (err, result) => {
+    db.venue_category.update({ _id: mongojs.ObjectId(req.params.id) }, { $set: { venue_cat_name: req.body.venue_cat_name,image: req.body.cat_img } }, (err, result) => {
         if (err) {
             res.send(err);
         }
@@ -202,7 +202,7 @@ router.get('/vendor_cat/:id', (req, res, next) => {
 
 // create vendor category
 router.post('/vendor_cat', (req, res, next) => {
-    db.vendor_category.save({ vendor_cat_name: req.body.vendor_cat_name }, (err, result) => {
+    db.vendor_category.save({ vendor_cat_name: req.body.vendor_cat_name,image: req.body.cat_img }, (err, result) => {
         if (err) {
             res.send(err);
         }
@@ -212,7 +212,7 @@ router.post('/vendor_cat', (req, res, next) => {
 //update vendor category
 router.put('/vendor_cat/:id', (req, res, next) => {
     var vendor_cat_name = req.body.vendor_cat_name;
-    db.vendor_category.update({ _id: mongojs.ObjectId(req.params.id) }, { $set: { vendor_cat_name: req.body.vendor_cat_name } }, (err, result) => {
+    db.vendor_category.update({ _id: mongojs.ObjectId(req.params.id) }, { $set: { vendor_cat_name: req.body.vendor_cat_name,image: req.body.cat_img } }, (err, result) => {
         if (err) {
             res.send(err);
         }
@@ -708,14 +708,14 @@ router.put('/vendor_status/:id', (req, res, next) => {
 // send venue inquiry
 router.post('/venue_inquiry', (req, res, next) => {
     var venue__inquiry = {
-        customer_id: req.body.customer_id,
+        customer_name: req.body.customer_name,
         venue_id: req.body.venue_id,
         date: req.body.date,
         email: req.body.email,
         mobileNo: req.body.mobile,
         no_of_person: req.body.person,
         days: req.body.body.days,
-        puropse: req.body.puropse
+        purpose: req.body.purpose
     }
     db.venue_category.save(venue_inquiry, (err, result) => {
         if (err) {
@@ -728,13 +728,13 @@ router.post('/venue_inquiry', (req, res, next) => {
 // send vendor inquiry
 router.post('/vendor_inquiry', (req, res, next) => {
     var venue__inquiry = {
-        customer_id: req.body.customer_id,
+        customer_name: req.body.customer_name,
         vendor_id: req.body.venue_id,
         date: req.body.date,
         email: req.body.email,
         mobileNo: req.body.mobile,
         location: req.body,
-        puropse: req.body.puropse
+        purpose: req.body.purpose
     }
     db.venue_category.save(venue_inquiry, (err, result) => {
         if (err) {
