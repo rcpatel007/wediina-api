@@ -48,7 +48,7 @@ router.put('/admin_update/:id', (req, res, next) => {
 
 
 //validate login credentials
-router.post('/customerLogin', function (req, res) {
+// router.post('/customerLogin', function (req, res) {
 //     db.customer.findOne({ email: req.body.email }, function (err, result) {
 //         if (err) return res.status(500).send('Error on the server.');
 //         if (!result) return res.status(404).send('No user found.');
