@@ -1,8 +1,10 @@
 var express = require('express');
 var router = express.Router();
-
-var mongojs = require('mongojs');
+var jwt = require('jsonwebtoken');
+var randtoken = require('rand-token')
 var bcrypt = require('bcryptjs');
+var mongojs = require('mongojs');
+// var bcrypt = require('bcryptjs');
 var config = require('../config');
 // db connection
 
@@ -43,6 +45,21 @@ router.put('/admin_update/:id', (req, res, next) => {
 
 //customer Login
 // login user
+
+
+//validate login credentials
+router.post('/customerLogin', function (req, res) {
+//     db.customer.findOne({ email: req.body.email }, function (err, result) {
+//         if (err) return res.status(500).send('Error on the server.');
+//         if (!result) return res.status(404).send('No user found.');
+//         var passwordIsValid = bcrypt.compareSync(req.body.password, result.password);
+//         if (!passwordIsValid) return res.status(401).send({ auth: false, token: null });
+//         var token = jwt.sign({ id: result._id }, config.secret, {
+//             expiresIn: 86400 // expires in 24 hours
+//         });
+//         res.status(200).send({ auth: true, token: token });
+//     });
+// });
 router.get('/customerLogin', (req, res, next) => {
     db.customer.findOne({ email: req.body.email }, (err, result) => {
         if (err) return res.status(500).send('Error on the server.');
@@ -450,11 +467,13 @@ router.get('/customer/:id', (req, res, next) => {
 
 // create home image
 router.post('/new_customer', (req, res, next) => {
+    
+        var hashedPassword = bcrypt.hashSync(req.body.password, 8);
     var associate = {
         name: req.body.name,
         contact_no: req.body.contact_no,
         email: req.body.email,
-        password: req.body.password
+        password: hashedPassword
 
     }
     db.customer.save(associate, (err, result) => {
@@ -655,6 +674,8 @@ router.get('/vendor_by_id/:id', (req, res, next) => {
 
 // create vendors
 router.post('/newvendor', (req, res, next) => {
+
+    var hashedPassword = bcrypt.hashSync(req.body.password, 8);
     var associate = {   
         vendor_cat_id: req.body.vendor_cat_id,
         fname: req.body.fname,
@@ -667,7 +688,7 @@ router.post('/newvendor', (req, res, next) => {
         gstno: req.body.gstno,
         image:req.body.image,
         sub_images:req.body.sub_images,
-        password: req.body.password,
+        password: hashedPassword,
         address: req.body.address,
         city: req.body.city,
         area: req.body.area,
