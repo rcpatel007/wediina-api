@@ -17,15 +17,24 @@ router.get('/', (req, res, next) => {
 });
 // login admin
 router.get('/admin', (req, res, next) => {
+    // db.admin.findOne({ email: req.body.email }, (err, result) => {
+    //     if (err) return res.status(500).send('Error on the server.');
+    //     if (!result) return res.status(404).send('No user found.');
+    //      if (req.body.password == result.password) {
+    //         res.json(result);
+    //         res.status(200).send({ "message": "Login Sucessfully" });
+    //             var passwordIsValid =true;
+    //     }
+    //     if (passwordIsValid=false) return res.status(401).send('password is not valid');
+    // });
+
     db.admin.findOne({ email: req.body.email }, (err, result) => {
         if (err) return res.status(500).send('Error on the server.');
         if (!result) return res.status(404).send('No user found.');
-         if (req.body.password == result.password) {
-            res.json(result);
-            res.status(200).send({ "message": "Login Sucessfully" });
-                var passwordIsValid =true;
-        }
-        if (passwordIsValid=false) return res.status(401).send('password is not valid');
+        var passwordIsValid = bcrypt.compareSync(req.body.password, result.password);
+        if (!passwordIsValid) return res.status(401).send('password is not valid');
+        res.json(result);
+        res.status(200).send({ "message": "Login Sucessfully" });
     });
 });
 // admin update password
