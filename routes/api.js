@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
+
+var nodemailer = require('nodemailer');
 var randtoken = require('rand-token')
 var bcrypt = require('bcryptjs');
 var mongojs = require('mongojs');
@@ -621,7 +623,8 @@ router.put('/venue_update/:id', (req, res, next) => {
             cop:req.body.cop,
             location:req.body.location,
             desp:req.body.desp,
-            video_story:req.body.video_story
+            video_story:req.body.video_story,
+            bookingdate:req.body.bookingdate
         }
     }, (err, result) => {
         if (err) {
@@ -649,6 +652,16 @@ router.put('/venue_status/:id', (req, res, next) => {
             res.send(err);
         }
         res.json({ "message": "Venue Status Updated" });
+    });
+});
+
+router.put('/venue_bookdate/:id', (req, res, next) => {
+    var bookingdate = req.body.bookingdate;
+    db.vendors.update({ _id: mongojs.ObjectId(req.params.id) }, { $set: { bookingdate: req.body.bookingdate } }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "Vendor Status Updated" });
     });
 });
 
@@ -703,7 +716,8 @@ router.post('/newvendor', (req, res, next) => {
         area: req.body.area,
         state: req.body.state,
         video_story:req.body.video_story,
-        desp:req.body.desp
+        desp:req.body.desp,
+        bookingdate:req.body.bookingdate
     }
     db.vendors.save(associate, (err, result) => {
         if (err) {
@@ -748,7 +762,8 @@ router.put('/vendor_update/:id', (req, res, next) => {
             city: req.body.city,
             state: req.body.state,
             video_story:req.body.video_story,
-            desp:req.body.desp
+            desp:req.body.desp,
+            bookingdate:req.body.bookingdate
         }
     }, (err, result) => {
         if (err) {
@@ -781,6 +796,18 @@ router.put('/vendor_status/:id', (req, res, next) => {
     });
 });
 
+router.put('/vendor_bookdate/:id', (req, res, next) => {
+    var bookingdate = req.body.bookingdate;
+    db.vendors.update({ _id: mongojs.ObjectId(req.params.id) }, { $set: { bookingdate: req.body.bookingdate } }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "Vendor Status Updated" });
+    });
+});
+
+
+
 
 
 /************************************************************* */
@@ -792,27 +819,50 @@ router.put('/vendor_status/:id', (req, res, next) => {
 
 // send venue inquiry
 router.post('/venue_inquiry', (req, res, next) => {
-    var venue__inquiry = {
+    var venue_inquiry = {
         customer_name: req.body.customer_name,
         venue_id: req.body.venue_id,
         date: req.body.date,
         email: req.body.email,
         mobileNo: req.body.mobile,
         no_of_person: req.body.person,
-        days: req.body.body.days,
+        days: req.body.days,
         purpose: req.body.purpose
     }
-    db.venue_category.save(venue_inquiry, (err, result) => {
+    db.venue_inquiry.save(venue_inquiry, (err, result) => {
         if (err) {
             res.send(err);
         }
+
+         //send email
+         var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'chiragramani145@gmail.com',
+                pass: '9712129465'
+            }
+        });
+        var mailOptions = {
+            from: 'chiragramani145@gmail.com',
+            to: req.body.email,
+            subject: 'Inquiery of all venues',
+            text: 'please get your Inquiery',
+            html: 'please get your inquiry and update with client: <br /><b>: </b>' + req.body.email + '<br /><b>Password: <span style="color:blue;">' + req.body.mobileNo + "</span></b>"
+        };
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
         res.json({ "message": "vendors category add" });
     });
 });
 
 // send vendor inquiry
 router.post('/vendor_inquiry', (req, res, next) => {
-    var venue__inquiry = {
+    var vendor_inquiry = {
         customer_name: req.body.customer_name,
         vendor_id: req.body.venue_id,
         date: req.body.date,
@@ -821,7 +871,7 @@ router.post('/vendor_inquiry', (req, res, next) => {
         location: req.body,
         purpose: req.body.purpose
     }
-    db.venue_category.save(venue_inquiry, (err, result) => {
+    db.vendor_inquiry.save(vendor_inquiry, (err, result) => {
         if (err) {
             res.send(err);
         }
@@ -901,6 +951,142 @@ router.delete('/review/:id', (req, res, next) => {
     });
 });
 
+
+/**************************************************************** */
+// prime photographer   
+/**************************************************************** */
+
+//get all vendors
+router.get('/prime_photo', (req, res, next) => {
+    db.primephotos.find((err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json(result);
+    });
+});
+
+
+//get primephotos by id
+router.get('/prime_photo/:id', (req, res, next) => {
+    db.primephotos.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json(result);
+    });
+});
+
+
+
+// create primephotos
+router.post('/prime_photo', (req, res, next) => {
+
+    var hashedPassword = bcrypt.hashSync(req.body.password, 8);
+    var associate = {   
+        fname: req.body.fname,
+        lname: req.body.lname,
+        package:req.body.package,
+        status:req.body.status,
+        companyName: req.body.companyName,
+        contactno: req.body.contactno,
+        email: req.body.email,
+        gstno: req.body.gstno,
+        image:req.body.image,
+        sub_images:req.body.sub_images,
+        password: hashedPassword,
+        address: req.body.address,
+        city: req.body.city,
+        area: req.body.area,
+        state: req.body.state,
+        video_story:req.body.video_story,
+        weblink:req.body.weblink,
+        bookingdate:req.body.bookingdate
+    }
+    db.primephotos.save(associate, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "new vendor add" });
+    });
+});
+
+
+//update vendor by id
+router.put('/prime_photo/:id', (req, res, next) => {
+    var fname = req.body.fname;
+    var lname = req.body.lname;
+    var package=req.body.package_time;
+    var companyName = req.body.companyName;
+    var contactno = req.body.contactno;
+    var email = req.body.email;
+    var gstno = req.body.gstno;
+    var password = req.body.password;
+    var address = req.body.address;
+    var city = req.body.city;
+    var area = req.body.area;
+    var state = req.body.state;
+    var images = req.body.images;
+    var sub_images = req.body.sub_images;
+    db.primephotos.update({ _id: mongojs.ObjectId(req.params.id) }, {
+        $set: {
+            fname: req.body.fname,
+            lname: req.body.lname,
+            package:req.body.package,
+            status:req.body.status,
+            companyName: req.body.companyName,
+            contactno: req.body.contactno,
+            email: req.body.email,
+            gstno: req.body.gstno,
+            password: req.body.password,
+            address: req.body.address,
+            area: req.body.area,
+            city: req.body.city,
+            state: req.body.state,
+            video_story:req.body.video_story,
+               weblink:req.body.weblink,
+            bookingdate:req.body.bookingdate
+        }
+    }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "vendor details updated" });
+    });
+});
+
+
+//delete vendor
+router.delete('/prime_photo/:id', (req, res, next) => {
+    db.primephotos.remove({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "venue_delete Delete" });
+    });
+});
+
+
+// status change
+router.put('/prime_status/:id', (req, res, next) => {
+    var status = req.body.Status;
+    db.primephotos.update({ _id: mongojs.ObjectId(req.params.id) }, { $set: { status: req.body.Status } }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "Vendor Status Updated" });
+    });
+});
+
+router.put('/prime_bookdate/:id', (req, res, next) => {
+    var bookingdate = req.body.bookingdate;
+    db.primephotos.update({ _id: mongojs.ObjectId(req.params.id) }, { $set: { bookingdate: req.body.bookingdate } }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "Vendor Status Updated" });
+    });
+});
 
 
 
