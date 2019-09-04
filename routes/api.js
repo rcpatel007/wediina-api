@@ -71,7 +71,7 @@ router.put('/admin_update/:id', (req, res, next) => {
 //         res.status(200).send({ auth: true, token: token });
 //     });
 // });
-router.get('/customerLogin', (req, res, next) => {
+router.post('/customerLogin', (req, res, next) => {
     db.customer.findOne({ email: req.body.email }, (err, result) => {
         if (err) return res.status(500).send('Error on the server.');
         if (!result) return res.status(404).send('No user found.');
@@ -122,7 +122,7 @@ router.put('/venue_pwd_update/:id', (req, res, next) => {
 
 //Vendors Login
 // login user
-router.get('/vendorLogin', (req, res, next) => {
+router.post('/vendorLogin', (req, res, next) => {
     db.vendors.findOne({ email: req.body.email }, (err, result) => {
         if (err) return res.status(500).send('Error on the server.');
         if (!result) return res.status(404).send('No user found.');
@@ -551,6 +551,7 @@ router.get('/venue_by_id/:id', (req, res, next) => {
 
 // create new venue
 router.post('/newvenue', (req, res, next) => {
+    var hashedPassword = bcrypt.hashSync(req.body.password, 8);
     var associate = {
         venue_cat_id: req.body.venue_cat_id,
         fname: req.body.fname,
@@ -562,7 +563,7 @@ router.post('/newvenue', (req, res, next) => {
         email: req.body.email,
         gstno: req.body.gstno,
         status:req.body.status,
-        password: req.body.password,
+        password: hashedPassword,
         address: req.body.address,
         city: req.body.city,
         state: req.body.state,
@@ -1087,7 +1088,5 @@ router.put('/prime_bookdate/:id', (req, res, next) => {
         res.json({ "message": "Vendor Status Updated" });
     });
 });
-
-
 
 module.exports = router;
