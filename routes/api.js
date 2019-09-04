@@ -97,7 +97,7 @@ router.put('/customer_pwd_update/:id', (req, res, next) => {
 
 //venue Login
 // login user
-router.get('/venueLogin', (req, res, next) => {
+router.post('/venueLogin', (req, res, next) => {
     db.venues.findOne({ email: req.body.email }, (err, result) => {
         if (err) return res.status(500).send('Error on the server.');
         if (!result) return res.status(404).send('No user found.');
