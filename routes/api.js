@@ -18,7 +18,7 @@ router.get('/', (req, res, next) => {
     res.render('index');
 });
 // login admin
-router.get('/admin', (req, res, next) => {
+router.post('/admin', (req, res, next) => {
     // db.admin.findOne({ email: req.body.email }, (err, result) => {
     //     if (err) return res.status(500).send('Error on the server.');
     //     if (!result) return res.status(404).send('No user found.');
@@ -69,6 +69,16 @@ router.put('/admin_update/:id', (req, res, next) => {
 //             expiresIn: 86400 // expires in 24 hours
 //         });
 //         res.status(200).send({ auth: true, token: token });
+//     });
+// });
+// router.post('/customerLogin', (req, res, next) => {
+//     db.customer.findOne({ email: req.body.email }, (err, result) => {
+//         if (err) return res.status(500).send('Error on the server.');
+//         if (!result) return res.status(404).send('No user found.');
+//         var passwordIsValid = bcrypt.compareSync(req.body.password, result.password);
+//         if (!passwordIsValid) return res.status(401).send('password is not valid');
+//         res.json(result);
+//         res.status(200).send({ "message": "Login Sucessfully" });
 //     });
 // });
 router.post('/customerLogin', (req, res, next) => {
