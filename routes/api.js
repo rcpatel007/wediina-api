@@ -217,6 +217,7 @@ router.delete('/venue_cat/:id', (req, res, next) => {
 
 //get all venue category
 router.get('/city', (req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     db.city.find((err, result) => {
         if (err) {
             res.send(err);
@@ -228,6 +229,7 @@ router.get('/city', (req, res, next) => {
 
 //get venue category by id
 router.get('/city/:id', (req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     db.city.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
         if (err) {
             res.send(err);
@@ -238,6 +240,7 @@ router.get('/city/:id', (req, res, next) => {
 
 // create venue category
 router.post('/city', (req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     // venue_cat_name: req.body.venue_cat_name;
     db.city.save({ city: req.body.city}, (err, result) => {
         if (err) {
@@ -551,6 +554,7 @@ router.get('/venue', (req, res, next) => {
 
 //get venue by id
 router.get('/venue_by_id/:id', (req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     db.venues.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
         if (err) {
             res.send(err);
@@ -830,36 +834,46 @@ router.put('/vendor_bookdate/:id', (req, res, next) => {
 
 // send venue inquiry
 router.post('/venue_inquiry', (req, res, next) => {
-    var venue_inquiry = {
+    console.log(req.body.customer_name);
+    
+    var associate = {
         customer_name: req.body.customer_name,
         venue_id: req.body.venue_id,
         date: req.body.date,
         email: req.body.email,
-        mobileNo: req.body.mobile,
-        no_of_person: req.body.person,
+        mobileNo: req.body.mobileNo,
+        no_of_person: req.body.no_of_person,
         days: req.body.days,
         purpose: req.body.purpose
     }
-    db.venue_inquiry.save(venue_inquiry, (err, result) => {
+    db.venue_inquiry.save(associate, (err, result) => {
         if (err) {
             res.send(err);
         }
-
+        console.log("inquiry",associate);
+        
          //send email
          var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'chiragramani145@gmail.com',
-                pass: '9712129465'
+                user: 'wediina11@gmail.com',
+                pass: 'Bj9638127136@'
             }
         });
         var mailOptions = {
-            from: 'chiragramani145@gmail.com',
-            to: req.body.email,
-            subject: 'Inquiery of all venues',
-            text: 'please get your Inquiery',
-            html: 'please get your inquiry and update with client: <br /><b>: </b>' + req.body.email + '<br /><b>Password: <span style="color:blue;">' + req.body.mobileNo + "</span></b>"
+            from: 'wediina11@gmail.com',
+            to: req.body.v_email,
+            subject: 'Inquiery of your venues',
+            text: 'Please get your Inquiery',
+            html: 'Please get your inquiry and update with client: <br /><b>Customer Name </b>' + req.body.customer_name + 
+            '<br /><b>Email: </b><span>' + req.body.email + '</span>'+
+            '<br /><b>Mobile No: </b><span>' + req.body.mobileNo + '</span>'+
+            '<br /><b>Booking Date: </b><span>' + req.body.date + '</span>'+
+            '<br /><b>No of Person: </b><span>' + req.body.no_of_person + '</span>'+
+            '<br /><b>How many days customer need your place: </b><span>' + req.body.days + ' days</span>'+
+            '<br /><b>purpose of inquiry: </b><span>' + req.body.purpose + '</span>'
         };
+        
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
                 console.log(error);
@@ -867,7 +881,7 @@ router.post('/venue_inquiry', (req, res, next) => {
                 console.log('Email sent: ' + info.response);
             }
         });
-        res.json({ "message": "vendors category add" });
+        res.json({ "message": "Venue inquiry Sent" });
     });
 });
 
@@ -930,7 +944,7 @@ router.post('/review', (req, res, next) => {
         if (err) {
             res.send(err);
         }
-        res.json({ "message": "home slider image add" });
+        res.json({ "message": "review add" });
     });
 });
 //update home image
@@ -948,7 +962,7 @@ router.put('/review/:id', (req, res, next) => {
         if (err) {
             res.send(err);
         }
-        res.json({ "message": "home slider image update" });
+        res.json({ "message": "review update" });
     });
 });
 
@@ -958,7 +972,7 @@ router.delete('/review/:id', (req, res, next) => {
         if (err) {
             res.send(err);
         }
-        res.json({ "message": "home ads slider image Delete" });
+        res.json({ "message": "review Delete" });
     });
 });
 
