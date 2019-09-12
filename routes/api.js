@@ -843,7 +843,6 @@ router.post('/venue_inquiry', (req, res, next) => {
         email: req.body.email,
         mobileNo: req.body.mobileNo,
         no_of_person: req.body.no_of_person,
-        days: req.body.days,
         purpose: req.body.purpose
     }
     db.venue_inquiry.save(associate, (err, result) => {
