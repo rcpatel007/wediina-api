@@ -639,7 +639,6 @@ router.put('/venue_update/:id', (req, res, next) => {
             location:req.body.location,
             desp:req.body.desp,
             video_story:req.body.video_story,
-            bookingdate:req.body.bookingdate
         }
     }, (err, result) => {
         if (err) {
@@ -732,7 +731,9 @@ router.post('/newvendor', (req, res, next) => {
         state: req.body.state,
         video_story:req.body.video_story,
         desp:req.body.desp,
-        bookingdate:req.body.bookingdate
+        bookingdate:req.body.bookingdate,
+        weblink:null,
+        prime_user:false
     }
     db.vendors.save(associate, (err, result) => {
         if (err) {
@@ -760,6 +761,8 @@ router.put('/vendor_update/:id', (req, res, next) => {
     var state = req.body.state;
     var images = req.body.images;
     var sub_images = req.body.sub_images;
+   var weblink =eq.body.weblink;
+      var prime_user =req.body.prime_user;
     db.vendors.update({ _id: mongojs.ObjectId(req.params.id) }, {
         $set: {
             vendor_cat_id: req.body.vendor_cat_id,
@@ -778,7 +781,7 @@ router.put('/vendor_update/:id', (req, res, next) => {
             state: req.body.state,
             video_story:req.body.video_story,
             desp:req.body.desp,
-            bookingdate:req.body.bookingdate
+            weblink:req.body.weblink
         }
     }, (err, result) => {
         if (err) {
