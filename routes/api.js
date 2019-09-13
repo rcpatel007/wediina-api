@@ -672,11 +672,11 @@ router.put('/venue_status/:id', (req, res, next) => {
 
 router.put('/venue_bookdate/:id', (req, res, next) => {
     var bookingdate = req.body.bookingdate;
-    db.vendors.update({ _id: mongojs.ObjectId(req.params.id) }, { $set: { bookingdate: req.body.bookingdate } }, (err, result) => {
+    db.venues.update({ _id: mongojs.ObjectId(req.params.id) }, { $set: { bookingdate: req.body.bookingdate } }, (err, result) => {
         if (err) {
             res.send(err);
         }
-        res.json({ "message": "Vendor Status Updated" });
+        res.json({ "message": "Venue date Updated" });
     });
 });
 
@@ -864,12 +864,11 @@ router.post('/venue_inquiry', (req, res, next) => {
             to: req.body.v_email,
             subject: 'Inquiery of your venues',
             text: 'Please get your Inquiery',
-            html: 'Please get your inquiry and update with client: <br /><b>Customer Name </b>' + req.body.customer_name + 
+            html: '<h3>Please get your inquiry and update with client:</h3> <br />  <br /><b>Customer Name </b>' + req.body.customer_name + 
             '<br /><b>Email: </b><span>' + req.body.email + '</span>'+
             '<br /><b>Mobile No: </b><span>' + req.body.mobileNo + '</span>'+
             '<br /><b>Booking Date: </b><span>' + req.body.date + '</span>'+
             '<br /><b>No of Person: </b><span>' + req.body.no_of_person + '</span>'+
-            '<br /><b>How many days customer need your place: </b><span>' + req.body.days + ' days</span>'+
             '<br /><b>purpose of inquiry: </b><span>' + req.body.purpose + '</span>'
         };
         
@@ -898,9 +897,36 @@ router.post('/vendor_inquiry', (req, res, next) => {
     db.vendor_inquiry.save(vendor_inquiry, (err, result) => {
         if (err) {
             res.send(err);
-        }
-        res.json({ "message": "vendors category add" });
-    });
+        }  //send email
+        var transporter = nodemailer.createTransport({
+           service: 'gmail',
+           auth: {
+               user: 'wediina11@gmail.com',
+               pass: 'Bj9638127136@'
+           }
+       });
+       var mailOptions = {
+           from: 'wediina11@gmail.com',
+           to: req.body.v_email,
+           subject: 'Inquiery of your venues',
+           text: 'Please get your Inquiery',
+           html: '<h3>Please get your inquiry and update with client:</h3> <br />  <br /><b>Customer Name </b>' + req.body.customer_name + 
+           '<br /><b>Email: </b><span>' + req.body.email + '</span>'+
+           '<br /><b>Mobile No: </b><span>' + req.body.mobileNo + '</span>'+
+           '<br /><b>Booking Date: </b><span>' + req.body.date + '</span>'+
+           '<br /><b>Location: </b><span>' + req.body.location + '</span>'+
+           '<br /><b>purpose of inquiry: </b><span>' + req.body.purpose + '</span>'
+       };
+       
+       transporter.sendMail(mailOptions, function (error, info) {
+           if (error) {
+               console.log(error);
+           } else {
+               console.log('Email sent: ' + info.response);
+           }
+       });
+       res.json({ "message": "Vendor inquiry Sent" });
+   });
 });
 
 
@@ -1000,8 +1026,6 @@ router.get('/prime_photo/:id', (req, res, next) => {
         res.json(result);
     });
 });
-
-
 
 // create primephotos
 router.post('/prime_photo', (req, res, next) => {
