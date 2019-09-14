@@ -926,7 +926,7 @@ router.get('/venue_inquiry', (req, res, next) => {
 
 router.get('/venue_inquiry/:id', (req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    db.venue_inquiry.findOne({ venue_id: mongojs.ObjectId(req.params.venue_id) }, (err, result) => {
+    db.venue_inquiry.findOne({ venue_id:req.params.venue_id }, (err, result) => {
         if (err) {
             res.send(err);
         }
