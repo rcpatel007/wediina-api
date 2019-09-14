@@ -925,8 +925,8 @@ router.get('/venue_inquiry', (req, res, next) => {
 });
 
 router.get('/venue_inquiry/:id', (req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    db.venue_inquiry.findOne({ venue_id:req.params.venue_id }, (err, result) => {
+    // res.setHeader('Access-Control-Allow-Origin', '*');
+    db.venue_inquiry.findOne({ venue_id:req.params.vid }, (err, result) => {
         if (err) {
             res.send(err);
         }
@@ -981,8 +981,8 @@ router.post('/vendor_inquiry', (req, res, next) => {
 
 
 router.get('/vendor_inquiry/:id', (req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    db.vendor_inquiry.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
+    // res.setHeader('Access-Control-Allow-Origin', '*');
+    db.vendor_inquiry.findOne({ vendor_id:req.params.vid }, (err, result) => {
         if (err) {
             res.send(err);
         }
