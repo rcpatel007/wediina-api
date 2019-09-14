@@ -777,7 +777,7 @@ router.put('/vendor_update/:id', (req, res, next) => {
     var images = req.body.images;
     var sub_images = req.body.sub_images;
    var weblink =eq.body.weblink;
-      var prime_user =req.body.prime_user;
+    //   var prime_user =req.body.prime_user;
     db.vendors.update({ _id: mongojs.ObjectId(req.params.id) }, {
         $set: {
             vendor_cat_id: req.body.vendor_cat_id,
@@ -811,7 +811,7 @@ router.put('/vendor_prime_status/:id', (req, res, next) => {
       var prime_user =req.body.prime_user;
     db.vendors.update({ _id: mongojs.ObjectId(req.params.id) }, {
         $set: {
-            prime_user =req.body.prime_user
+            prime_user:req.body.prime_user
         }
     }, (err, result) => {
         if (err) {
