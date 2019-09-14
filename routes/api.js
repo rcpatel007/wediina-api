@@ -805,6 +805,7 @@ router.put('/vendor_update/:id', (req, res, next) => {
         res.json({ "message": "vendor details updated" });
     });
 });
+
 //update vendor by id
 router.put('/vendor_prime_status/:id', (req, res, next) => {
       var prime_user =req.body.prime_user;
@@ -819,8 +820,6 @@ router.put('/vendor_prime_status/:id', (req, res, next) => {
         res.json({ "message": "vendor prime Update updated" });
     });
 });
-
-
 
 //delete vendor
 router.delete('/vendor_delete/:id', (req, res, next) => {
