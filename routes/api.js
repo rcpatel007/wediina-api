@@ -924,6 +924,15 @@ router.get('/venue_inquiry', (req, res, next) => {
     });
 });
 
+router.get('/venue_inquiry/:id', (req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    db.venue_inquiry.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json(result);
+    });
+});
 // send vendor inquiry
 router.post('/vendor_inquiry', (req, res, next) => {
     var vendor_inquiry = {
@@ -970,6 +979,16 @@ router.post('/vendor_inquiry', (req, res, next) => {
    });
 });
 
+
+router.get('/vendor_inquiry/:id', (req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    db.vendor_inquiry.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json(result);
+    });
+});
 router.get('/vendor_inquiry', (req, res, next) => {
     db.vendor_inquiry.find((err, result) => {
         if (err) {
