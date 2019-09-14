@@ -497,7 +497,8 @@ router.post('/new_customer', (req, res, next) => {
         name: req.body.name,
         contact_no: req.body.contact_no,
         email: req.body.email,
-        password: hashedPassword
+        password: hashedPassword,
+        status:true
 
     }
     db.customer.save(associate, (err, result) => {
@@ -522,6 +523,20 @@ router.put('/customer/:id', (req, res, next) => {
             res.send(err);
         }
         res.json({ "message": "Customer Detail Update" });
+    });
+});
+
+router.put('/customer_status/:id', (req, res, next) => {
+
+    db.customer.update({ _id: mongojs.ObjectId(req.params.id) }, {
+        $set: {
+        status:req.body.status
+            }
+    }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "customer status update" });
     });
 });
 
@@ -790,6 +805,21 @@ router.put('/vendor_update/:id', (req, res, next) => {
         res.json({ "message": "vendor details updated" });
     });
 });
+//update vendor by id
+router.put('/vendor_prime_status/:id', (req, res, next) => {
+      var prime_user =req.body.prime_user;
+    db.vendors.update({ _id: mongojs.ObjectId(req.params.id) }, {
+        $set: {
+            prime_user =req.body.prime_user
+        }
+    }, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ "message": "vendor prime Update updated" });
+    });
+});
+
 
 
 //delete vendor
@@ -886,6 +916,15 @@ router.post('/venue_inquiry', (req, res, next) => {
     });
 });
 
+router.get('/venue_inquiry', (req, res, next) => {
+    db.venue_inquiry.find((err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json(result);
+    });
+});
+
 // send vendor inquiry
 router.post('/vendor_inquiry', (req, res, next) => {
     var vendor_inquiry = {
@@ -932,6 +971,14 @@ router.post('/vendor_inquiry', (req, res, next) => {
    });
 });
 
+router.get('/vendor_inquiry', (req, res, next) => {
+    db.vendor_inquiry.find((err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json(result);
+    });
+});
 
 
 /**************************************************************** */
