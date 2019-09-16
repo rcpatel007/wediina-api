@@ -2,7 +2,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var CustomerSchema = new mongoose.Schema({
-  vendor_cat_name: String,
+email: String,
+  password: String,
+  customer_id: String,
 }, { collection: 'customer' });
 
 mongoose.model('customer', CustomerSchema);

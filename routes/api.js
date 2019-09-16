@@ -36,7 +36,7 @@ router.post('/admin', (req, res, next) => {
         var passwordIsValid = bcrypt.compareSync(req.body.password, result.password);
         if (!passwordIsValid) return res.status(401).send('password is not valid');
         res.json(result);
-        res.status(200).send({ "message": "Login Sucessfully" });
+        res.status(200).send(result);
     });
 });
 // admin update password
@@ -81,19 +81,19 @@ router.put('/admin_update/:id', (req, res, next) => {
 //         res.status(200).send({ "message": "Login Sucessfully" });
 //     });
 // });
-router.post('/customerLogin', (req, res, next) => {
+router.post('/customerLogin', (req, res,next) => {
     db.customer.findOne({ email: req.body.email }, (err, result) => {
         if (err) return res.status(500).send('Error on the server.');
         if (!result) return res.status(404).send('No user found.');
         var passwordIsValid = bcrypt.compareSync(req.body.password, result.password);
         if (!passwordIsValid) return res.status(401).send('password is not valid');
-        res.json(result);
-        res.status(200).send({ "message": "Login Sucessfully" });
+        // res.json(result);
+        res.status(200).send(result);
     });
 });
 //update password
 router.put('/customer_pwd_update/:id', (req, res, next) => {
-    var password = req.body;
+    var password = req.body.password;
     var hashedPassword = bcrypt.hashSync(req.body.password, 8);
     db.customer.update({ _id: mongojs.ObjectId(req.params.id) }, { $set: { password: req.body.hashedPassword } }, (err, result) => {
         if (err) {
@@ -104,7 +104,6 @@ router.put('/customer_pwd_update/:id', (req, res, next) => {
 });
 
 
-
 //venue Login
 // login user
 router.post('/venueLogin', (req, res, next) => {
@@ -113,10 +112,12 @@ router.post('/venueLogin', (req, res, next) => {
         if (!result) return res.status(404).send('No user found.');
         var passwordIsValid = bcrypt.compareSync(req.body.password, result.password);
         if (!passwordIsValid) return res.status(401).send('password is not valid');
-        res.json(result);
-        res.status(200).send({ "message": "Login Sucessfully" });
+        // res.json(result);
+        res.status(200).send(result);
     });
 });
+
+
 //update password
 router.put('/venue_pwd_update/:id', (req, res, next) => {
     var password = req.body;
@@ -138,8 +139,8 @@ router.post('/vendorLogin', (req, res, next) => {
         if (!result) return res.status(404).send('No user found.');
         var passwordIsValid = bcrypt.compareSync(req.body.password, result.password);
         if (!passwordIsValid) return res.status(401).send('password is not valid');
-        res.json(result);
-        res.status(200).send({ "message": "Login Sucessfully" });
+        // res.json(result);
+        res.status(200).send(result);
     });
 });
 //update password
@@ -776,7 +777,7 @@ router.put('/vendor_update/:id', (req, res, next) => {
     var state = req.body.state;
     var images = req.body.images;
     var sub_images = req.body.sub_images;
-   var weblink =eq.body.weblink;
+   var weblink =req.body.weblink;
     //   var prime_user =req.body.prime_user;
     db.vendors.update({ _id: mongojs.ObjectId(req.params.id) }, {
         $set: {
@@ -820,6 +821,7 @@ router.put('/vendor_prime_status/:id', (req, res, next) => {
         res.json({ "message": "vendor prime Update updated" });
     });
 });
+
 
 //delete vendor
 router.delete('/vendor_delete/:id', (req, res, next) => {
@@ -924,15 +926,15 @@ router.get('/venue_inquiry', (req, res, next) => {
     });
 });
 
-router.get('/venue_inquiry/:id', (req, res, next) => {
-    // res.setHeader('Access-Control-Allow-Origin', '*');
-    db.venue_inquiry.findOne({ venue_id:req.params.vid }, (err, result) => {
-        if (err) {
-            res.send(err);
-        }
-        res.json(result);
-    });
-});
+// router.get('/venue_inquiry/:id', (req, res, next) => {
+//     // res.setHeader('Access-Control-Allow-Origin', '*');
+//     db.venue_inquiry.findOne({  }, (err, result) => {
+//         if (err) {
+//             res.send(err);
+//         }
+//         res.json(result);
+//     });
+// });
 // send vendor inquiry
 router.post('/vendor_inquiry', (req, res, next) => {
     var vendor_inquiry = {
@@ -940,7 +942,7 @@ router.post('/vendor_inquiry', (req, res, next) => {
         vendor_id: req.body.venue_id,
         date: req.body.date,
         email: req.body.email,
-        mobileNo: req.body.mobile,
+        mobileNo: req.body.mobileNo,
         location: req.body,
         purpose: req.body.purpose
     }
@@ -1037,7 +1039,7 @@ router.post('/review', (req, res, next) => {
         if (err) {
             res.send(err);
         }
-        res.json({ "message": "review add" });
+        res.json({ "message": "review add",result });
     });
 });
 //update home image
@@ -1065,7 +1067,7 @@ router.delete('/review/:id', (req, res, next) => {
         if (err) {
             res.send(err);
         }
-        res.json({ "message": "review Delete" });
+        res.json({ "message": "review Delete",result });
     });
 });
 
