@@ -35,7 +35,7 @@ router.post('/admin', (req, res, next) => {
         if (!result) return res.status(404).send('No user found.');
         var passwordIsValid = bcrypt.compareSync(req.body.password, result.password);
         if (!passwordIsValid) return res.status(401).send('password is not valid');
-        res.json(result);
+        // res.json(result);
         res.status(200).send(result);
     });
 });
@@ -83,8 +83,8 @@ router.put('/admin_update/:id', (req, res, next) => {
 // });
 router.post('/customerLogin', (req, res,next) => {
     db.customer.findOne({ email: req.body.email }, (err, result) => {
-        if (err) return res.status(500).send('Error on the server.');
-        if (!result) return res.status(404).send('No user found.');
+        if (err) return res.status(500).send({"message":"Error on the server."});
+        if (!result) return res.status(404).send({"message":"No user found."});
         var passwordIsValid = bcrypt.compareSync(req.body.password, result.password);
         if (!passwordIsValid) return res.status(401).send('password is not valid');
         // res.json(result);
