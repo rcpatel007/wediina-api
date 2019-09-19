@@ -1184,6 +1184,53 @@ router.delete('/prime_photo/:id', (req, res, next) => {
     });
 });
 
+router.post('/contact_detail', (req, res, next) => {
+    console.log(req.body.customer_name);
+    
+    var associate = {
+        customer_name: req.body.name,
+        email: req.body.email,
+        MobileNo: req.body.mobileNo,
+        email: req.body.subject,
+        message: req.body.message,
+    }
+    db.contact.save(associate, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        console.log("inquiry",associate);
+        
+         //send email
+         var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'wediina11@gmail.com',
+                pass: 'Bj9638127136@'
+            }
+        });
+        var mailOptions = {
+            from: 'wediina11@gmail.com',
+            to: "info@wediina.com",
+            subject: req.body.subject,
+            text: 'Please get your Inquiery ' ,
+            html: '<h3>Please get your inquiry and update with client:</h3> <br />  <br /><b>Customer Name </b>' + req.body.name + 
+            '<br /><b>Email: </b><span>' + req.body.email + '</span>'+
+            '<br /><b>Mobile No: </b><span>' + req.body.mobileNo + '</span>'+
+            '<br /><b>Message: </b><span>' + req.body.message+ '</span>'
+        };
+        
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+        res.json({ "message": "contact detail submit" });
+    });
+});
+
+
 
 // status change
 router.put('/prime_status/:id', (req, res, next) => {
